@@ -3,7 +3,7 @@ module Bridge
   BASE_URL = "https://sync.bankin.com/v2"
 	#Bridge creds
   @@client_id = ENV['BRIDGE_CLIENT_ID']
-	@@client_secret = ENV['BRIDGE_CLIENT_SECRET']
+  @@client_secret = ENV['BRIDGE_CLIENT_SECRET']
   @@bridge_creds_hash = {"client_id" => @@client_id, "client_secret" => @@client_secret}
 
   @@bridge_version = "2018-06-15"
@@ -220,12 +220,16 @@ module Bridge
 
   def list_items(email, password, before=nil, after=nil, limit=nil)
     url = BASE_URL + "/items"
-    url_params = { 
-      "limit" => limit,
-      "before" => before,
-      "after" => after
-    }
-    query = @@bridge_creds_hash.merge(url_params)
+    url_params = Hash.new
+    url_params["before"] = before unless before.nil?
+    url_params["after"] = before unless before.nil?
+    url_params["limit"] = before unless before.nil?
+    
+    unless url_params.empty?
+      query = @@bridge_creds_hash.merge(url_params)
+    else
+      query = @@bridge_creds_hash
+    end
     headers = authentify_headers(email, password)
     result = get_bridge_request(url, headers, query)
     return result
@@ -250,7 +254,7 @@ module Bridge
     return result
   end
   
-  def get_status(email, password, item_id)
+  def get_refresh_status(email, password, item_id)
     url = BASE_URL + "/items/#{item_id}/refresh/status"
     query = @@bridge_creds_hash
     headers = authentify_headers(email, password)
@@ -286,30 +290,39 @@ module Bridge
   end
 
   #TRANSACTION RESOURCE
-  def list_transactions(email, password, since= nil, to=nil, before=nil, after=nil, limit=nil)
+  def list_transactions(email, password, since=nil, to=nil, before=nil, after=nil, limit=nil)
     url = BASE_URL + "/transactions"
-    url_params = { 
-      "since" => since,
-      "until" => to,
-      "before" => before,
-      "after" => after,
-      "limit" => limit
-    }
-    query = @@bridge_creds_hash.merge(url_params)
+    url_params = Hash.new
+    url_params["since"] = before unless before.nil?
+    url_params["to"] = before unless before.nil?
+    url_params["before"] = before unless before.nil?
+    url_params["after"] = before unless before.nil?
+    url_params["limit"] = before unless before.nil?
+
+    unless url_params.empty?
+      query = @@bridge_creds_hash.merge(url_params)
+    else
+      query = @@bridge_creds_hash
+    end
     headers = authentify_headers(email, password)
     result = get_bridge_request(url, headers, query)
     return result
   end
 
-  def list_updated_transactions(email, password, since= nil, before=nil, after=nil, limit=nil)
+  def list_updated_transactions(email, password, since=nil, before=nil, after=nil, limit=nil)
     url = BASE_URL + "/transactions/updated"
-    url_params = { 
-      "since" => since,
-      "before" => before,
-      "after" => after,
-      "limit" => limit
-    }
-    query = @@bridge_creds_hash.merge(url_params)
+    url_params = Hash.new
+    url_params["since"] = before unless before.nil?
+    url_params["before"] = before unless before.nil?
+    url_params["after"] = before unless before.nil?
+    url_params["limit"] = before unless before.nil?
+
+    unless url_params.empty?
+      query = @@bridge_creds_hash.merge(url_params)
+    else
+      query = @@bridge_creds_hash
+    end
+
     headers = authentify_headers(email, password)
     result = get_bridge_request(url, headers, query)
     return result
@@ -323,30 +336,40 @@ module Bridge
     return result
   end
 
-  def list_account_transactions(email, password, account_id, since= nil, to=nil, before=nil, after=nil, limit=nil)
+  def list_account_transactions(email, password, account_id, since=nil, to=nil, before=nil, after=nil, limit=nil)
     url = BASE_URL + "/accounts/#{account_id}/transactions"
-    url_params = { 
-      "since" => since,
-      "until" => to,
-      "before" => before,
-      "after" => after,
-      "limit" => limit
-    }
-    query = @@bridge_creds_hash.merge(url_params)
+    url_params = Hash.new
+    url_params["since"] = before unless before.nil?
+    url_params["to"] = before unless before.nil?
+    url_params["before"] = before unless before.nil?
+    url_params["after"] = before unless before.nil?
+    url_params["limit"] = before unless before.nil?
+
+    unless url_params.empty?
+      query = @@bridge_creds_hash.merge(url_params)
+    else
+      query = @@bridge_creds_hash
+    end
+
     headers = authentify_headers(email, password)
     result = get_bridge_request(url, headers, query)
     return result
   end
 
-  def list_account_updated_transactions(email, password, account_id, since= nil, before=nil, after=nil, limit=nil)
+  def list_account_updated_transactions(email, password, account_id, since=nil, before=nil, after=nil, limit=nil)
     url = BASE_URL + "/accounts/#{account_id}/transactions/updated"
-    url_params = { 
-      "since" => since,
-      "before" => before,
-      "after" => after,
-      "limit" => limit
-    }
-    query = @@bridge_creds_hash.merge(url_params)
+    url_params = Hash.new
+    url_params["since"] = before unless before.nil?
+    url_params["before"] = before unless before.nil?
+    url_params["after"] = before unless before.nil?
+    url_params["limit"] = before unless before.nil?
+
+    unless url_params.empty?
+      query = @@bridge_creds_hash.merge(url_params)
+    else
+      query = @@bridge_creds_hash
+    end
+
     headers = authentify_headers(email, password)
     result = get_bridge_request(url, headers, query)
     return result
@@ -355,12 +378,16 @@ module Bridge
   #STOCK RESOURCE
   def list_stocks(email, password, before=nil, after=nil, limit=nil)
     url = BASE_URL + "/stocks"
-    url_params = { 
-      "before" => before,
-      "after" => after,
-      "limit" => limit
-    }
-    query = @@bridge_creds_hash.merge(url_params)
+    url_params = Hash.new
+    url_params["before"] = before unless before.nil?
+    url_params["after"] = before unless before.nil?
+    url_params["limit"] = before unless before.nil?
+
+    unless url_params.empty?
+      query = @@bridge_creds_hash.merge(url_params)
+    else
+      query = @@bridge_creds_hash
+    end
     headers = authentify_headers(email, password)
     result = get_bridge_request(url, headers, query)
     return result
@@ -368,13 +395,17 @@ module Bridge
 
   def list_updated_stocks(email, password, before=nil, after=nil, limit=nil, since=nil)
     url = BASE_URL + "/stocks/updated"
-    url_params = { 
-      "before" => before,
-      "after" => after,
-      "limit" => limit,
-      "since" => since
-    }
-    query = @@bridge_creds_hash.merge(url_params)
+    url_params = Hash.new
+    url_params["since"] = before unless before.nil?
+    url_params["before"] = before unless before.nil?
+    url_params["after"] = before unless before.nil?
+    url_params["limit"] = before unless before.nil?
+
+    unless url_params.empty?
+      query = @@bridge_creds_hash.merge(url_params)
+    else
+      query = @@bridge_creds_hash
+    end
     headers = authentify_headers(email, password)
     result = get_bridge_request(url, headers, query)
     return result
